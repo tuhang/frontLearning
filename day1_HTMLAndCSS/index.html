@@ -1,11 +1,166 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>day1</title>
-    </head>
-    <body>
-        <h1>标题1</h1>
-        <p>段落1</p>
-    </body>
+
+<head>
+    <meta charset="utf-8">
+    <title>day1</title>
+    <base href="http://www.baidu.com/" target="_blank">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <style type="text/css">
+        body {
+            background-color: white;
+        }
+
+        p {
+            color: rgba(255, 100, 0, 0.75)
+        }
+
+        h1 {
+            color: #020;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">标题1</h1>
+    <hr>
+    <!-- 注释 -->
+    <p>段落1</p>
+    <p>换行<br>部落</p>
+    <a href="www.baidu.com">声明一个链接</a>
+    <br>
+    <a href="">声明另一个链接,可以用到base对应的href</a>
+
+    <img src="xx.jpg" width="200px" height="200px">
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    列标题1
+                </td>
+                <td>
+                    列标题2
+                </td>
+                <td>
+                    列标题3
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    行1,列1
+                </td>
+                <td>
+                    行1,列2
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    行2,列1
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <form action="">
+        First name: <input type="text" name="firstname"><br>
+        Last name: <input type="text" name="lastname">
+    </form>
+    <form action="">
+        Username: <input type="text" name="user"><br>
+        Password: <input type="password" name="password">
+    </form>
+
+    <iframe src="demo_iframe.htm" name="iframe_a"></iframe>
+    <p><a href="https://www.runoob.com" target="iframe_a" rel="noopener">RUNOOB.COM</a></p>
+
+    <br>
+    <canvas id="myCanvas" width="200" height="100" style="border:1px solid #d81717;">
+    </canvas>
+    <script>
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "#FF0000";
+        ctx.fillRect(0, 0, 150, 75);
+    </script>
+    <script>
+        if (typeof (Storage) !== "undefined") {
+            // 存储
+            localStorage.setItem("sitename", "菜鸟教程");
+            // 查找
+            document.getElementById("result").innerHTML = "网站名：" + localStorage.getItem("sitename");
+        }
+        else {
+            document.getElementById("result").innerHTML = "对不起，您的浏览器不支持 web 存储。";
+        }
+    </script>
+
+    <div style="border: 2px dashed #ccc;width:320px;text-align:center;">
+        <label for="keyname">别名(key):</label>
+        <input type="text" id="keyname" name="keyname" class="text" />
+        <br />
+        <label for="sitename">网站名：</label>
+        <input type="text" id="sitename" name="sitename" class="text" />
+        <br />
+        <label for="siteurl">网 址：</label>
+        <input type="text" id="siteurl" name="siteurl" />
+        <br />
+        <input type="button" onclick="save()" value="新增记录" />
+        <hr />
+        <label for="search_phone">输入别名(key)：</label>
+        <input type="text" id="search_site" name="search_site" />
+        <input type="button" onclick="find()" value="查找网站" />
+        <p id="find_result"><br /></p>
+    </div>
+    <br />
+    <div id="list">
+    </div>
+    <script>
+        //保存数据  
+        function save() {
+            var site = new Object;
+            site.keyname = document.getElementById("keyname").value;
+            site.sitename = document.getElementById("sitename").value;
+            site.siteurl = document.getElementById("siteurl").value;
+            var str = JSON.stringify(site); // 将对象转换为字符串
+            localStorage.setItem(site.keyname, str);
+            alert("保存成功");
+        }
+        //查找数据  
+        function find() {
+            var search_site = document.getElementById("search_site").value;
+            var str = localStorage.getItem(search_site);
+            var find_result = document.getElementById("find_result");
+            var site = JSON.parse(str);
+            find_result.innerHTML = search_site + "的网站名是：" + site.sitename + "，网址是：" + site.siteurl;
+        }
+
+        //将所有存储在localStorage中的对象提取出来，并展现到界面上
+        // 确保存储的 keyname 对应的值为转换对象，否则JSON.parse会报错
+        function loadAll() {
+            var list = document.getElementById("list");
+            if (localStorage.length > 0) {
+                var result = "<table border='1'>";
+                result += "<tr><td>别名</td><td>网站名</td><td>网址</td></tr>";
+                for (var i = 0; i < localStorage.length; i++) {
+                    var keyname = localStorage.key(i);
+                    var str = localStorage.getItem(keyname);
+                    var site = JSON.parse(str);
+                    result += "<tr><td>" + site.keyname + "</td><td>" + site.sitename + "</td><td>" + site.siteurl + "</td></tr>";
+                }
+                result += "</table>";
+                list.innerHTML = result;
+            } else {
+                list.innerHTML = "数据为空...";
+            }
+        }  
+    </script>
+
+
+</body>
+
 </html>
